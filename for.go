@@ -20,6 +20,48 @@ func main() {
 	fmt.Println(IsPalindrome("()()")) // false
 	fmt.Println(IsPalindrome("())(")) // true
 
+	fmt.Println()
+	// Sum of even Fibonacci numbers up to 4_000_000
+	a, b, total := 1, 2, 0
+	for a <= 4_000_000 {
+		if a%2 == 0 {
+			total += a
+		}
+		a, b = b, a+b
+	}
+	fmt.Println("total:", total)
+
+	fmt.Println()
+	handler(Provider{})
+
+	fmt.Println()
+	for i := range 3 {
+		fmt.Print(i)
+	}
+}
+
+func handler(p Provider) {
+	for {
+		msg := p.Next()
+		if msg == nil {
+			break
+		}
+		// TODO: Handle message
+	}
+}
+
+func (p *Provider) Next() *Message {
+	if p.n == 3 {
+		return nil
+	}
+
+	p.n++
+	return &Message{}
+}
+
+type Message struct{}
+type Provider struct {
+	n int
 }
 
 // IsPalindrome returns true of `s` is a palindrome.
