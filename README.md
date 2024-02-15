@@ -91,6 +91,7 @@ This will go on until `JLT` on line 10 won't happen (`AX` is contains the value 
 
 If you're not familiar with assembly, this logic seems backwards.
 But remember that in assembly you only have jumps for flow control, so this is how looping works at that level.
+If you want a nice visual display of assembly, check out [lensm](https://github.com/loov/lensm).
 
 ### Using More Than One Variable
 
@@ -283,8 +284,7 @@ This is handy in benchmarks.
 Listing 11 shows a benchmark.
 On line 07 we run `b.N` times and on lines 08-12 we execute the benchmarked code and check for errors.
 
-
-### Slices Range
+### Slice Range
 
 You can range over a slice with either a single variable on the left side or two variables on the left side.
 
@@ -355,3 +355,5 @@ But a better solution is to use the single variable version of range which uses 
 Listing 14 shows iteration of a slice with pointer semantics.
 The increment on line 38 will update the value in the slice and it'll show when printing on line 41.
 
+
+### Map Range
