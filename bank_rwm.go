@@ -14,9 +14,10 @@ func main() {
 		{"scrooge", "vip", 1_000_001},
 	}
 
-	for _, a := range bank {
+	for i, a := range bank {
 		if a.Type == "vip" {
 			a.Balance += 1_000
+			bank[i] = a
 		}
 	}
 	fmt.Println(bank)

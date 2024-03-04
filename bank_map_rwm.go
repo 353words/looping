@@ -9,14 +9,15 @@ type Account struct {
 }
 
 func main() {
-	bank := []Account{
-		{"donald", "regular", 123},
-		{"scrooge", "vip", 1_000_001},
+	bank := map[string]Account{
+		"donald":  {"donald", "regular", 123},
+		"scrooge": {"scrooge", "vip", 1_000_001},
 	}
 
-	for _, a := range bank {
+	for l, a := range bank {
 		if a.Type == "vip" {
 			a.Balance += 1_000
+			bank[l] = a
 		}
 	}
 	fmt.Println(bank)
