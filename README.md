@@ -332,7 +332,7 @@ Since you don't need the value of `i`, you don't place any variable on the left 
 
 ## Range Over Functions
 
-Go 1.22 also added `range over function` experiment.
+Go 1.22 added [`range over function` experiment](https://tip.golang.org/wiki/RangefuncExperiment).
 Go lacks a standard iterator protocol, and this is an attempt to make one.
 The idea is that you will produce the values in a function,
 and every time you have a value you pass it to a `yield` function that will handle the value.
@@ -340,7 +340,7 @@ The `yield` function call also let you know when the iteration is done and there
 
 _NOTE: If you are familiar with Python's generators - it's the same idea._
 
-Say you want have a slice of events and you want to filter out non valid events.
+Say you have a slice of events, and you want to filter out non-valid events.
 
 **Listing 14: Event**
 
@@ -411,7 +411,7 @@ Now let's try it out:
 On lines 36-40 you define the `events` slice, the event on line 38 is not valid.
 On line 42 you range over `Filter` which is called with `events` and `Event.filter` as the predicate.
 
-Run run the program you need to set the `GOEXPERIMENT` environment variable to `rangefunc`
+To run the program you need to set the `GOEXPERIMENT` environment variable to `rangefunc`
 
 **Listing 17: Running the Program**
 
