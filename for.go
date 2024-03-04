@@ -66,7 +66,7 @@ type Provider struct {
 
 // IsPalindrome returns true of `s` is a palindrome.
 func IsPalindrome(s string) bool {
-	rs := []rune(s)
+	rs := []rune(s) // convert to runes
 	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
 		if rs[i] != rs[j] {
 			return false

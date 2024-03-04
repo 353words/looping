@@ -1,6 +1,6 @@
-# Looping In Go
+# Advanced Looping In Go
 +++
-title = "Looping in Go"
+title = "Advanced Looping in Go"
 date = "FIXME"
 tags = ["golang"]
 categories = ["golang"]
@@ -10,9 +10,9 @@ author = "mikit"
 
 ### Overview
 
-Looping seems like a basic topic: Write a `for` with a termination condition, and you're done.
+Looping seems like a basic topic: Write a `for` loop with a termination condition, and you're done.
 But there's a lot more to loops in Go.
-Knowing more about `for` loops will give your more tool to accomplish your tasks and will also help you prevent some bugs.
+Knowing more about `for` loops will give you more tools to accomplish your tasks and will also help you prevent some bugs.
 
 ### Some Assembly Required
 
@@ -85,7 +85,6 @@ and finally in the post statement you increment `i` and decrement `j`.
 
 Note that you can't write `i++, j--` in the post statement, it's not a valid syntax.
 
-
 ### Naming Loops
 
 Can you detect the bug in the following code?
@@ -117,10 +116,10 @@ Can you detect the bug in the following code?
 32 }
 ```
 
-Listing 4 show a log handler.
-One lines 11-13 you define the log message.
-One line 18 you start a "forever" loop, on line 20 you decode the next log message.
-On line 21 you start a switch statement, on line 22 you check for end of input and if so break on line 23.
+Listing 4 shows a log handler.
+On lines 11-13 you define the log message.
+On line 18 you start a "forever" loop, on line 20 you decode the next log message.
+On line 21 you start a switch statement, on line 22 you check for the end of input and if so break on line 23.
 One line 24 you check for error and finally on line 27 you print the log message.
 
 If you run this code, it'll never terminate.
@@ -183,10 +182,9 @@ Say you want to give a $1,000 bonus to your VIP bank members.
 23 }
 ```
 
-
 Listing 6 shows adding a bonus to every VIP member.
 On lines 05-09 you define the `Account` type.
-On lines 17-21 you iterator over the account and add a $1,000 bonus to VIP members.
+On lines 17-21 you iterate over the account and add a $1,000 bonus to VIP members.
 However, when you print the bank on line 22 you don't see a change.
 This is since `a` is a copy of the value inside the `bank` slice.
 We say the two variable version of `range` uses value semantics.
@@ -206,7 +204,7 @@ But a better solution is to use the single variable version of range which uses 
 ```
 
 Listing 7 shows iteration of a slice with pointer semantics.
-The increment on line 19 will update the value in the slice and it'll show when printing on line 22.
+The increment on line 19 will update the value in the slice, and it'll show when printing on line 22.
 
 Another solution is to use read/modify/write.
 
@@ -221,16 +219,16 @@ Another solution is to use read/modify/write.
 22     }
 ```
 
-Listing 8 shows "read,modify,write" solution.
+Listing 8 shows a "read,modify,write" solution.
 On line 18 you get your own copy of `a`.
-Then only line 19 you change the local copy and on line 20 store the new value in the slice.
+Then on line 19 you change the local copy and on line 20 store the new value in the slice.
 
-This solution is great of you want to do "transaction like" changes.
-You do several modifications on the local copy, check for validity and only if everything works store the new value.
+This solution is great if you want to do "transaction like" changes.
+You do several modifications on the local copy, check for validity and only if everything is OK store the new value.
 
 ### Bonus Map Range
 
-Say you change `bank` to be a `map` and then try to give bonus.
+Say you change `bank` to be a `map` and then try to give a bonus.
 
 **Listing 9: Updating VIP Accounts**
 
@@ -258,9 +256,9 @@ Say you change `bank` to be a `map` and then try to give bonus.
 
 Listing 9 shows an attempt to update a map.
 On lines 12-15 you declare `bank` as a map from `login` to `Account`.
-On lines 17-21 you give a bonus to ever VIP member.
+On lines 17-21 you give a bonus to every VIP member.
 
-It has the same issue as listing 6 - you update a local copy and it wont be reflected in the map.
+It has the same issue as listing 6: You update a local copy, and it won't be reflected in the map.
 
 You might be tempted to use the same solution as in listing 14.
 
@@ -279,7 +277,7 @@ However, this code does not compile, you will see the following error:
 `./bank_map_err.go:19:4: cannot assign to struct field bank[k].Balance in map`.
 
 If you try to use a pointer (as in `(&bank[k]).Balance += 1_000`),
-this will fail as well with `invalid operation: cannot take address of bank[k]`.
+it will fail as well with `invalid operation: cannot take address of bank[k]`.
 
 The solution you can use is the read/modify/write solution from listing 15.
 
@@ -308,7 +306,8 @@ Go 1.22 allows you to loop over integers.
 11     }
 ```
 
-Listing 12 show a range over integer. Line 09 is the equivalent of: `for i := 0; i < 3; i++ {`.
+Listing 12 shows a range over an integer. 
+Line 09 is the equivalent of: `for i := 0; i < 3; i++ {`.
 
 I found it handy in benchmark code:
 
@@ -326,7 +325,7 @@ I found it handy in benchmark code:
 30 }
 ```
 
-Listing 13 shows an benchmark.
+Listing 13 shows a benchmark.
 On line 24 you run `b.N` times instead of the old `for i := 0; i < b.N; i++`.
 Since you don't need the value of `i`, you don't place any variable on the left of `range`.
 
@@ -335,8 +334,8 @@ Since you don't need the value of `i`, you don't place any variable on the left 
 Go 1.22 added [`range over function` experiment](https://tip.golang.org/wiki/RangefuncExperiment).
 Go lacks a standard iterator protocol, and this is an attempt to make one.
 The idea is that you will produce the values in a function,
-and every time you have a value you pass it to a `yield` function that will handle the value.
-The `yield` function call also let you know when the iteration is done and there's no need to produce more values.
+and every time you produce a value you pass it to a `yield` function that will handle the value.
+The `yield` function call also lets you know when the iteration is done and there's no need to produce more values by returning `false`.
 
 _NOTE: If you are familiar with Python's generators - it's the same idea._
 
@@ -388,7 +387,7 @@ On line 5 you define a generic function with an `any` constraint.
 The function accepts a `values` parameter which is a slice and a `pred` which is a predicate function.
 `Filter` returns a function that accepts a `yield` function to handle the value.
 On line 06 you define the returned iterator function. 
-On line 07 you iterator over the slice and on line 08 you skip invalid values.
+On line 07 you iterate over the slice and on line 08 you skip invalid values.
 On line 12 you send a valid value to the `yield` function and check if you need to continue.
 Finally on line 18 you return the iterator functions.
 
@@ -421,7 +420,7 @@ To run the program you need to set the `GOEXPERIMENT` environment variable to `r
 03 {elliot logout}
 ```
 
-Listing 17 show how to run the program.
+Listing 17 shows how to run the program.
 On line 01 you set the `GOEXPERIMENT` environment variable and use `go run` to run the program.
 On lines 01-02 you can see the output which does not contain the invalid event.
 
@@ -431,6 +430,7 @@ On lines 01-02 you can see the output which does not contain the invalid event.
 Looking at Go 1.22.0 source code, you can see about 650 uses of `goto`:
 
 **Listing 18: Number of `goto` in the Standard Library**
+
 ```
 01 $ find ~/sdk/go1.22.0/src -type f -name '*.go' -not -path '*test*' -not -name '*_test.go' | \
 02     xargs grep -E 'goto\s+' | wc -l
@@ -441,9 +441,9 @@ Listing 18 shows how to look for `goto` in the standard library.
 On line 01 you use the `find` utility to find non-test files in the Go 1.22 sources.
 On line 02 you use `grep` and `wc` to find `goto`s.
 
-Assume some false positives, this is still a significant use of `goto`.
-Assume the Go team is aware of [the dangers using goto](https://xkcd.com/292/),
-this signals there are valid cases of using `goto`.
+Assuming some false positives, this is still a significant use of `goto`.
+Even considering [the dangers using goto](https://xkcd.com/292/),
+it signals there are valid cases of using `goto`.
 
 Let's change the event processing loop from listing 5 to use goto:
 
@@ -471,11 +471,13 @@ Let's change the event processing loop from listing 5 to use goto:
 ```
 
 Listing 19 shows an example of using `goto`.
-One line 31 you define a `done` label and line 23 when there's not more data, you `goto` this label.
+One line 31 you define a `done` label and line 23 when there's no more data, you `goto` this label.
 
 ### Conclusion
 
-There's much more to looping that a `for` loop.
+There's much more to looping than a `for` loop.
 Next time you're about to start a loop, think about all the options you have in Go and pick the right one.
 
 What looping idioms did I miss? Tell me at [miki@ardanlabs.com](mailto:miki@ardanlabs.com).
+
+
